@@ -1,0 +1,9 @@
+name: widescreen1
+root:
+- type: column
+  width: stretch
+  height: stretch
+  justify: flex-start
+  children:
+  - type: gameplate
+    className: galoomba

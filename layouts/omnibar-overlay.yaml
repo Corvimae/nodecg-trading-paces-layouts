@@ -1,0 +1,8 @@
+name: omnibar-overlay
+root:
+- type: column
+  width: stretch
+  height: stretch
+  justify: flex-start
+  children:
+  - type: incentive-view

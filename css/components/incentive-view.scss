@@ -1,0 +1,40 @@
+.incentive-view {
+  display: flex;
+  width: 1520px;
+  height: 110px;
+  align-items: center;
+}
+
+.incentive-grid {
+  display: grid;
+  width: 1270px;
+  grid-auto-rows: auto;
+  margin-left: 8px;
+  grid-gap: 4px;
+  height: min-height;
+
+  &-pip {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #FF7A06;
+    opacity: 0.2;
+
+    &--active {
+      opacity: 0.8;
+      // box-shadow: 4px 4px 0 rgba(255, 122, 6, 0.25);
+    }
+  }
+}
+
+.donation-total {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 250px;
+  background-color: #FF7A06;
+  padding: 0.5rem;
+  font-family: 'Helvetica';
+  font-size: 2rem;
+  font-weight: 700;
+}

@@ -1,0 +1,51 @@
+{
+  "name": "nodecg-trading-paces-layouts",
+  "version": "1.0.0",
+  "source": "src/module.ts",
+  "author": "Corvimae",
+  "license": "MIT",
+  "context": "browser",
+  "outputFormat": "commonjs",
+  "scripts": {
+    "watch": "npx parcel watch",
+    "build": "npx parcel build"
+  },
+  "dependencies": {
+    "classnames": "^2.5.1",
+    "react": "^18.2.0"
+  },
+  "targets": {
+    "js": {
+      "source": "src/module.ts",
+      "distDir": "dist/js"
+    },
+    "css": {
+      "source": "css/module.scss",
+      "distDir": "dist/css"
+    }
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.16.4",
+    "@types/react": "^18.3.9",
+    "parcel": "^2.7.0",
+    "typescript": "^6.0.3"
+  },
+  "nodecg": {
+    "compatibleRange": "^2",
+    "cartographer": {
+      "file": "dist/js/module.js",
+      "css": "dist/css"
+    },
+    "assetCategories": [],
+    "mount": [
+      {
+        "directory": "images",
+        "endpoint": "images"
+      },
+      {
+        "directory": "fonts",
+        "endpoint": "fonts"
+      }
+    ]
+  }
+}
