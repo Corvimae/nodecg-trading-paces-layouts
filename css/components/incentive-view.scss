@@ -3,25 +3,32 @@
   width: 1520px;
   height: 110px;
   align-items: center;
+  background-color: #000;
 }
 
 .incentive-grid {
-  display: grid;
+  display: flex;
   width: 1270px;
-  grid-auto-rows: auto;
-  margin-left: 8px;
-  grid-gap: 4px;
-  height: min-height;
+  height: 110px;
+  justify-content: center;
+  align-items: center;
+
+  &__canvas {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-gap: 1px;
+    height: min-height;
+  }
 
   &-pip {
-    width: 4px;
-    height: 4px;
+    width: 3px;
+    height: 3px;
     border-radius: 50%;
     background-color: #FF7A06;
-    opacity: 0.2;
+    opacity: 0.1;
 
     &--active {
-      opacity: 0.8;
+      opacity: 1;
       // box-shadow: 4px 4px 0 rgba(255, 122, 6, 0.25);
     }
   }
@@ -31,10 +38,36 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: space-between;
   width: 250px;
+  height: 110px;
   background-color: #FF7A06;
-  padding: 0.5rem;
+  color: #fff;
   font-family: 'Helvetica';
-  font-size: 2rem;
   font-weight: 700;
+  padding: 0;
+  
+  &__value {
+    display: flex;
+    padding: 0.75rem 0.5rem 0.5rem;
+    font-size: 3.5rem;
+    min-height: 0;
+    align-self: stretch;
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: center;
+
+    &-character {
+      width: 2rem;
+      line-height: 1;
+    }
+  }
+
+  &__receiver {
+    background-color: #fff;
+    color: #FF7A06;
+    font-size: 1.25rem;
+    text-align: right;
+    padding: 0.5rem;
+  }
 }

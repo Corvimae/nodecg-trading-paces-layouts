@@ -1,3 +1,13 @@
+import { BitmapLetters } from "./bitmapLetters";
+
+interface DrawOpts {
+  inverse?: boolean;
+}
+
+type DrawStringOpts = DrawOpts & {
+  letterSpacing?: number;
+}
+
 export class BitmapCanvas {
   height: number;
   width: number;
@@ -9,12 +19,78 @@ export class BitmapCanvas {
     this.points = [...Array(height * width)];
   }
   
+  blank() {
+    this.points = [...Array(this.height * this.width)];
+  }
+
   coordsToOffset(x: number, y: number) {
+    if (x >= this.width || y >= this.height || x < 0 || y < 0) return null;
     return (y * this.width) + x;
   }
 
-  drawPoint(x: number, y: number) {
-    this.points[this.coordsToOffset(x, y)] = true;
+  drawPoint(x: number, y: number, opts: DrawOpts = {}) {
+    const drawInverse = opts.inverse ?? false;
+
+    const offset = this.coordsToOffset(x, y);
+
+    if (!offset) return;
+
+    this.points[offset] = !drawInverse;
+  }
+
+  drawLetter(char: string, x: number, y: number, opts: DrawOpts = {}) {
+    const charBitmap = BitmapLetters[char];
+
+    if (!charBitmap) {
+      this.drawOutlineRect(x, y, x + 4, y + 6);
+
+      return [x + 5, x + 6];
+    }
+    
+    for (let dy = 0; dy < charBitmap.length; dy += 1) {
+      for (let dx = 0; dx < charBitmap[0].length; dx += 1) {
+        if(charBitmap[dy][dx]) this.drawPoint(x + dx, y + dy, opts)
+      }
+    }
+
+    return [x + charBitmap[0].length, y + charBitmap[0].length];
+  }
+
+  getStringWidth(value: string, letterSpacing = 1) {
+    let dx = 0;
+
+    for (const char of value) {
+      if (dx !== 0) dx += letterSpacing;
+
+      if (char === ' ') {
+        dx += 3;
+      } else {
+        const charBitmap = BitmapLetters[char];
+
+        if (charBitmap) {
+          dx += charBitmap[0].length;
+        } else {
+          dx += 5;
+        }
+      }
+    }
+
+    return dx;
+  }
+
+  drawString(value: string, x: number, y: number, opts: DrawStringOpts = {}) {
+    const letterSpacing = opts.letterSpacing ?? 1;
+    let dx = x;
+
+    for (const char of value) {
+      if (char === ' ') {
+        dx += letterSpacing + 3;
+      } else {
+        const [charX] = this.drawLetter(char, dx, y, opts);
+
+        dx = charX + letterSpacing;
+      }
+    }
   }
 
   drawLine(x1: number, y1: number, x2: number, y2: number) {
@@ -41,6 +117,21 @@ export class BitmapCanvas {
         y1 += sy;
       }
     }
+  }
+  
+  drawRect(x1: number, y1: number, x2: number, y2: number, filled: boolean) {
+    if (filled) {
+      this.drawFilledRect(x1, y1, x2, y2);
+    } else {
+      this.drawOutlineRect(x1, y1, x2, y2);
+    }
+  }
+  
+  drawOutlineRect(x1: number, y1: number, x2: number, y2: number) {
+    this.drawLine(x1, y1, x2, y1);
+    this.drawLine(x2, y1, x2, y2);
+    this.drawLine(x2, y2, x1, y2);
+    this.drawLine(x1, y2, x1, y1);
   }
 
   drawFilledRect(x1: number, y1: number, x2: number, y2: number) {

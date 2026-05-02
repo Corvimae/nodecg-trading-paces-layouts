@@ -22,9 +22,17 @@
     "css": {
       "source": "css/module.scss",
       "distDir": "dist/css"
+    },
+    "extension": {
+      "source": "src/extension/index.ts",
+      "distDir": "extension",
+      "engines": {
+        "node": ">= 18"
+      }
     }
   },
   "devDependencies": {
+    "@nodecg/types": "2.1.2",
     "@parcel/transformer-sass": "^2.16.4",
     "@types/react": "^18.3.9",
     "parcel": "^2.7.0",

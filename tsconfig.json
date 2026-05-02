@@ -15,6 +15,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "types/**/*"
+    "types/**/*",
+    "node_modules/@nodecg/types/augment-window.d.ts"
   ]
 }
