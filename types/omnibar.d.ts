@@ -5,6 +5,7 @@ namespace Omnibar {
       data: {
         trackerId: number;
       };
+      duration: number;
       id: string;
     }[];
   } 

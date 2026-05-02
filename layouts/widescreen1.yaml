@@ -1,9 +1,17 @@
 name: widescreen1
 root:
-- type: column
-  width: stretch
-  height: stretch
-  justify: flex-start
+- type: row
+  width: 100%
+  height: calc(100% - 110px)
   children:
-  - type: gameplate
-    className: galoomba
+  - type: column
+    width: 608px
+    children:
+    - type: timer-bar
+  - type: column
+    width: 1312px
+    children:
+    - type: source
+      resolution: 16x9
+    - type: gameplate
+      height: stretch
