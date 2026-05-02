@@ -38,6 +38,14 @@ export class BitmapCanvas {
     this.points[offset] = !drawInverse;
   }
 
+  getPoint(x: number, y: number) {
+    const offset = this.coordsToOffset(x, y);
+
+    if (!offset) return false;
+
+    return this.points[offset];
+  }
+
   drawLetter(char: string, x: number, y: number, opts: DrawOpts = {}) {
     const charBitmap = BitmapLetters[char];
 

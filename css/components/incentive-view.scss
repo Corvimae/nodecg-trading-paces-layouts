@@ -13,13 +13,6 @@
   justify-content: center;
   align-items: center;
 
-  &__canvas {
-    display: grid;
-    grid-auto-rows: auto;
-    grid-gap: 1px;
-    height: min-height;
-  }
-
   &-pip {
     width: 3px;
     height: 3px;

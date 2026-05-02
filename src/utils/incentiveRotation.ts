@@ -3,7 +3,8 @@ import { useIncentiveCanvas } from "./incentiveCanvas";
 import { BUNDLE_NAME } from "./utils";
 
 const BID_DISPLAY_DURATION_MS = 10000;
-const ANIMATION_DELAY_MS = 100;
+const BLANKING_DURATION_MS = 1000;
+const ANIMATION_DELAY_MS = 50;
 
 interface IncentiveRotationState {
   index: number;
@@ -41,7 +42,8 @@ export function useAnimatedCallback() {
 
   return cartographer.useMemo(() => ({
     togglePlayback,
-    setAnimation
+    setAnimation,
+    currentAnimation: callback.current,
   }), [togglePlayback, setAnimation]);
 }
 
@@ -54,6 +56,7 @@ export function useIncentiveRotation() {
   const hasFinishedInitialUpdate = cartographer.useRef(false);
   const updateTimeoutId = cartographer.useRef<number | null>(null);
   const isShowingCTA = cartographer.useRef(false);
+  const isBlanking = cartographer.useRef(false);
   const scheduleNextUpdate = cartographer.useCallback(() => {
     function executeUpdate() {
       console.log('Executing update...');
@@ -63,6 +66,7 @@ export function useIncentiveRotation() {
         return;
       };
 
+      const prevIndex = state.current.index;
       const nextIndex = (state.current.items.length ?? 0) === 0 ? 0 : (state.current.index + 1) % state.current.items.length;
       
       state.current = {
@@ -70,25 +74,55 @@ export function useIncentiveRotation() {
         index: nextIndex,
         nextRotationAt: Date.now() + BID_DISPLAY_DURATION_MS,
       };
+
+      if (prevIndex === -1) {
+        console.log('Blanking!');
+        isBlanking.current = true;
+        animation.togglePlayback(true);
+
+        state.current.nextRotationAt = Date.now() + BLANKING_DURATION_MS;
+
+        scheduleNextUpdate();
+
+        return;
+      }
+
+      function wrapAnimation(animation: (frame: number) => void) {
+        const startFrame = { current: 0 };
+        const hasBlankingStarted = { current: false };
+
+        return (frame: number) => {
+          if (!startFrame.current && isBlanking.current) {
+            startFrame.current = frame;
+            hasBlankingStarted.current = true;
+          }
+
+          const frameOffset = frame - startFrame.current;
+
+          if (hasBlankingStarted.current && (frameOffset > 6 || frameOffset % 2 === 0)) {
+            canvas.blank();
+          } else {
+            animation(frame);
+          }
+        }
+      }
       
-      scheduleNextUpdate();
-      
+      isBlanking.current = false;
+            
       if (state.current.items.length === 0) {
         if (isShowingCTA.current) return;
         animation.togglePlayback(true);
-        animation.setAnimation((frame) => {
+        animation.setAnimation(wrapAnimation((frame) => {
           canvas.drawDonationCTA(frame);
-        });
+        }));
 
-        state.current.nextRotationAt = Date.now() + 50_000;
+        state.current.nextRotationAt = Date.now() + 500_000;
 
         isShowingCTA.current = true;
         return;
       }
 
       const activeItem = state.current.items[nextIndex];
-
-      console.log(state.current.items, nextIndex);
       
       if (!activeItem) {
         console.error('No active item; seems like a bug.');
@@ -97,12 +131,26 @@ export function useIncentiveRotation() {
       }
 
       isShowingCTA.current = false;
+
       if (activeItem.bid_type === 'choice' && activeItem.options.length === 2 && !activeItem.allowuseroptions) {
-        canvas.drawBinaryBidwar(activeItem.name, activeItem.options);
+        animation.togglePlayback(true);
+        animation.setAnimation(wrapAnimation((frame) => {
+          canvas.drawBinaryBidwar(activeItem.name, activeItem.options, frame);
+        }));
       } else if (activeItem.bid_type === 'choice') {
-        canvas.drawBidwar(activeItem.name, activeItem.options);
+        animation.togglePlayback(true);
+        animation.setAnimation(wrapAnimation((frame) => {
+          canvas.drawBidwar(activeItem.name, activeItem.options, frame);
+        }));
       } else {
-        canvas.drawTarget(activeItem.name, activeItem.total, activeItem.goal as number);
+        animation.togglePlayback(true);
+        animation.setAnimation(wrapAnimation((frame) => {
+          canvas.drawTarget(activeItem.name, activeItem.total, activeItem.goal as number, frame);
+        }));
+      }
+
+      if (state.current.items.length > 1) {
+        scheduleNextUpdate();
       }
     }
     
@@ -130,12 +178,11 @@ export function useIncentiveRotation() {
     }
 
     state.current = {
-      index: 0,
-      nextRotationAt: Date.now() + BID_DISPLAY_DURATION_MS,
+      index: -1,
+      nextRotationAt: Date.now(),
       items: bids,
     };
 
-    console.log('RIP');
     scheduleNextUpdate();
   }, { bundle: BUNDLE_NAME });
 

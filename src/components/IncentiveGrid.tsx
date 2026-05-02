@@ -1,40 +1,41 @@
 import React from 'react';
-import classnames from 'classnames';
-import { BUNDLE_NAME } from '../utils/utils';
 import { useIncentiveRotation } from '../utils/incentiveRotation';
 
-
-const IncentiveGridPip: React.FC<{ active?: boolean }> = React.memo(({ active }) => {
-  const classes = classnames('incentive-grid-pip', {
-    'incentive-grid-pip--active': active,
-  });
-
-  return <div className={classes} />;
-});
-
 export const IncentiveGrid: React.FC = ({}) => {
-  const { canvas, state } = useIncentiveRotation();
-  
-  // cartographer.useEffect(() => {
-  //   // drawBidwar('Favorite 12 character string?', [
-  //   //   { name: 'ababababab', value: 2420 },
-  //   //   { name: 'awaggaawagga', value: 1483 },
-  //   //   { name: 'galoomba1234', value: 12 },
-  //   // ]);
-  //   // drawTarget('Upgrade to 13 Modelos%', 200, 480);
-  //   drawBinaryBidwar('Make Mint drink a 14th Modelo', [
-  //     { name: 'Yes', value: 1000 },
-  //     { name: 'Yes but on the right', value: 2000 },
-  //   ]);
-  // }, []);
+  const canvasRef = cartographer.useRef<HTMLCanvasElement>();
+  const requestId = cartographer.useRef(0);
+  const { canvas: incentiveCanvas } = useIncentiveRotation();
+
+  cartographer.useEffect(() => {
+    requestId.current = requestAnimationFrame(() => {
+      const canvas = canvasRef.current;
+      const ctx = canvas?.getContext('2d');
+
+      if (!canvas || !ctx) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let x = 0; x < incentiveCanvas.internal.width; x += 1) {
+        for (let y = 0; y < incentiveCanvas.internal.height; y += 1) {
+          if (incentiveCanvas.internal.getPoint(x, y)) {
+            ctx.fillStyle = "rgba(255, 122, 6, 1)";
+          } else {
+            ctx.fillStyle = "rgba(255, 122, 6, 0.1)";
+          }
+          
+          ctx.fillRect(5 + x * 4, 1 + y * 4, 3, 3);
+        }
+      }
+    });
+
+    return () => {
+      if (requestId.current) cancelAnimationFrame(requestId.current);
+    };
+  })
 
   return (
     <div className="incentive-grid">
-      <div className="incentive-grid__canvas" style={canvas.gridStyle}>
-        {canvas.grid.map((active, index) => (
-          <IncentiveGridPip key={index} active={active} />
-        ))}
-      </div>
+      <canvas ref={canvasRef} className="incentive-grid__canvas" width={1275} height={110} />
     </div>
   )
 }

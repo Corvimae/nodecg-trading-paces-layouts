@@ -1,5 +1,7 @@
 import type NodeCG from '@nodecg/types';
 
+const INCENTIVE_DISPLAY_DURATION = 10_000;
+
 export = (nodecg: NodeCG.ServerAPI) => {
    async function fetchFromTracker<T = Record<string, unknown>>(path: string): Promise<T[]> {
     const request = await fetch(`${nodecg.bundleConfig.trackerUrl}/${path}`, {
@@ -51,7 +53,6 @@ export = (nodecg: NodeCG.ServerAPI) => {
       
       if (!currentRunItem) return [];
 
-      console.log('Requesting a plan!');
       nodecg.sendMessageToBundle(
         'requestIncentivePlan',
         'nodecg-trading-paces-layouts',
@@ -63,9 +64,19 @@ export = (nodecg: NodeCG.ServerAPI) => {
   omnibarState.on('change', () => requestIncentivePlan());
 
   nodecg.listenFor('incentiveRotationMounted', () => {
-    console.log('incentive rotation did mount');
     requestIncentivePlan(true);
   });
+
+  setInterval(() => {
+    // Update lengths of carousel items based on number of relevant bids.
+    if (!omnibarState.value) return;
+
+    omnibarState.value.carouselQueue.forEach((queueItem) => {
+      const bidsForItem = bidTree.value?.filter((bid) => Number(bid.speedrun) === Number(queueItem.data.trackerId)) ?? []
+    
+      queueItem.duration = Math.max(1, bidsForItem.length) * INCENTIVE_DISPLAY_DURATION;
+    });
+  }, 10_000);
 
   requestIncentivePlan();
 };
