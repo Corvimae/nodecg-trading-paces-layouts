@@ -1,4 +1,5 @@
 namespace Speedcontrol {
+
   export interface ActiveRun {
     id: string;
     category: string;
@@ -12,5 +13,22 @@ namespace Speedcontrol {
     scheduledS: number;
     setupTime: string;
     setupTimeS: number;
+    teams: Team[];
   } 
+
+  export interface Team {
+    id: string;
+    name: string;
+    players: Player[];
+  }
+
+  export interface Player {
+    id: string;
+    name: string;
+    pronouns: string;
+    teamID: string;
+    social: {
+      twitch?: string;
+    };
+  }
 }

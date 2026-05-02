@@ -1,9 +1,38 @@
 import React from 'react';
+import { Timer } from './Timer';
+import { Nameplate, NameplateProps } from './Nameplate';
 
 export const TimerBar = () => {
-  const [timer] = cartographer.useReplicant<{ time: string } | null>('timer', null, {
+
+  const [runDataActiveRun] = cartographer.useReplicant<Speedcontrol.ActiveRun | null>('runDataActiveRun', null, {
     namespace: 'nodecg-speedcontrol',
   });
+
+  const headsets = cartographer.useMemo(() => {
+    const hostTeam = runDataActiveRun?.teams.find((team) => team.name.toLocaleLowerCase().includes('host'))?.players ?? [];
+    const commentaryTeam = runDataActiveRun?.teams.find((team) => team.name.toLocaleLowerCase().includes('commenta'))?.players ?? [];
+    const runnerTeams = runDataActiveRun?.teams.filter((team) => {
+      const lowerTeamName = team.name.toLocaleLowerCase();
+      return !lowerTeamName.includes('commenta') && !lowerTeamName.includes('host');
+    }).map((team) => team.players) ?? [];
+
+    return [
+      ...runnerTeams.flatMap((runnerTeam) => (
+        runnerTeam.map((player) => ({
+          player,
+          type: 'runner',
+        } as NameplateProps))
+      )),
+      ...commentaryTeam.map((player) => ({
+        player,
+        type: 'commentator',
+      } as NameplateProps)),
+      ...hostTeam.map((player) => ({
+        player,
+        type: 'host',
+      } as NameplateProps)),
+    ];
+  }, [runDataActiveRun]);
 
   return (
     <div className="timer-bar">
@@ -21,14 +50,14 @@ export const TimerBar = () => {
           <path d="M116 128H115.644L116.009 127.634C116.004 127.755 116.002 127.877 116 128Z" fill="#00AD42"/>
           <path d="M313.991 50.2588C313.996 50.1374 313.998 50.015 314 49.8926H314.356L313.991 50.2588Z" fill="#00AD42"/>
         </svg>
-        <div className="timer-bar__timer-value">
-          {[...(timer?.time ?? '0:00:00')].map((char, index) => (
-            <div key={index} className="timer-bar__timer-value-character">{char}</div>
-          ))}
-        </div>
+        <Timer />
       </div>
       <div className="timer-bar__left-bar">
-
+        <div className="timer-bar__nameplates">
+          {headsets.map((headset, index) => (
+            <Nameplate key={index} {...headset} />
+          ))}
+        </div>
       </div>
     </div>
   )

@@ -54,10 +54,30 @@
 
   &__left-bar {
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     top: 64px;
-    width: 50px;
+    width: 100%;
     height: calc(100% - 64px);
-    background-color: #63269B;
+
+    &::before {
+      content: ' ';
+      position: absolute;
+      height: 100%;
+      width: 50px;
+      background-color: #63269B;
+      z-index: -1;
+    }
   }
   
+  &__nameplates {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    top: 64px;
+    width: 100%;
+    height: calc(100% - 64px);
+    padding-bottom: 2rem;
+  }
 }
