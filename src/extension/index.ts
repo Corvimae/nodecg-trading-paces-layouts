@@ -1,9 +1,20 @@
 import type NodeCG from '@nodecg/types';
+import https from 'node:https';
 
-const INCENTIVE_DISPLAY_DURATION = 10_000;
+const INCENTIVE_DISPLAY_DURATION_MS = 10_000;
+const OMNIBAR_ROTATION_RETIME_INTERVAL_MS = 10_000;
+const FETCH_DONATION_TOTAL_INTERVAL_MS = 20_000;
 
 export = (nodecg: NodeCG.ServerAPI) => {
-   async function fetchFromTracker<T = Record<string, unknown>>(path: string): Promise<T[]> {
+  const donationTotal = nodecg.Replicant<number>('donationTotal', { 
+    persistent: false,
+    defaultValue: 0
+  });
+
+  const omnibarState = nodecg.Replicant<Omnibar.State>('nodecg-omnibar', 'nodecg-omnibar', {});
+  const bidTree = nodecg.Replicant<Tracker.Bid[]>('bidTree', 'nodecg-trading-paces-layouts', {});
+
+  async function fetchFromTracker<T = Record<string, unknown>>(path: string): Promise<T[]> {
     const request = await fetch(`${nodecg.bundleConfig.trackerUrl}/${path}`, {
       headers: {
         Authorization: `Token ${nodecg.bundleConfig.trackerApiKey}`,
@@ -26,7 +37,6 @@ export = (nodecg: NodeCG.ServerAPI) => {
     }
   }
 
-  const bidTree = nodecg.Replicant<Tracker.Bid[]>('bidTree', 'nodecg-trading-paces-layouts', {});
 
   async function fetchBids() {
     try {
@@ -41,7 +51,6 @@ export = (nodecg: NodeCG.ServerAPI) => {
 
   setInterval(fetchBids, 10 * 1000);
 
-  const omnibarState = nodecg.Replicant<Omnibar.State>('nodecg-omnibar', 'nodecg-omnibar', {});
   const previousCarouselItemId = { value: '' };
 
   function requestIncentivePlan(force = false) {
@@ -74,9 +83,27 @@ export = (nodecg: NodeCG.ServerAPI) => {
     omnibarState.value.carouselQueue.forEach((queueItem) => {
       const bidsForItem = bidTree.value?.filter((bid) => Number(bid.speedrun) === Number(queueItem.data.trackerId)) ?? []
     
-      queueItem.duration = Math.max(1, bidsForItem.length) * INCENTIVE_DISPLAY_DURATION;
+      queueItem.duration = Math.max(1, bidsForItem.length) * INCENTIVE_DISPLAY_DURATION_MS;
     });
-  }, 10_000);
+  }, OMNIBAR_ROTATION_RETIME_INTERVAL_MS);
 
   requestIncentivePlan();
+
+  async function updateDonationTotal() {
+    const request = await fetch(`${nodecg.bundleConfig.trackerUrl}/events/${nodecg.bundleConfig.trackerEvent}?totals`);
+    
+    try {
+      const response = await request.json();
+
+      if (request.status !== 200) throw new Error(`Error response from tracker: ${request.status} (${request.statusText}).`);
+    
+      donationTotal.value = response.donation_total;
+    } catch (e) {
+      console.error('Failed to fetch donation total.');
+    }
+  }
+
+  setInterval(updateDonationTotal, FETCH_DONATION_TOTAL_INTERVAL_MS);
+
+  updateDonationTotal();
 };

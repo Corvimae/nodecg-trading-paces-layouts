@@ -7,6 +7,7 @@ export const Gameplate = ({}) => {
 
   return (
     <div className="gameplate">
+      <div className="gameplate__texture" />
       <div className="gameplate__left-column">
         <div className="gameplate__this-is">This is</div>
         <div className="gameplate__title">{runDataActiveRun?.game}</div>
