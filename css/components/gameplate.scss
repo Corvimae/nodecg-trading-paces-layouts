@@ -1,14 +1,15 @@
 .gameplate {
+  $self: &;
+
   display: flex;
-  flex-direction: row;
-  background-color: #3E81CE;
-  color: #fff;
+  flex-direction: column;
+  background-color: #F2F2F2;
+  color: #000;
+  border: 6px solid #000;
   font-weight: 700;
-  font-family: 'Helvetica';
   align-self: stretch;
   min-height: 0;
   flex-grow: 1;
-  padding: 1rem 2rem;
 
   &__this-is {
     font-size: 2rem;
@@ -16,35 +17,97 @@
 
   &__title {
     font-size: 5.5rem;
-    margin-top: 0.75rem;
     line-height: 0.9;
+    margin-right: 1rem;
+    margin-top: 0.7rem;
   }
   
-  &__left-column {
+  &__top-row {
     display: flex;
-    max-width: 60%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #D9A000;
+    padding: 0.5rem 1rem;
+    gap: 1rem;
+
+    &--long-title {
+      #{$self}__title {
+        font-size: 3.5rem;
+      }
+
+      // #{$self}__console-letter {
+      //   --size: 75px;
+      // }
+    }
   }
 
-  &__right-column {
+  &__console-letter {
+    --size: 75px;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    width: var(--size);
+    height: var(--size);
+    min-width: var(--size);
+    min-height: var(--size);
+    border-radius: 50%;
     justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    color: #fff;
+    padding-top: 0.75rem;
+
+    &--slot-0 {
+      background-color: #00983B;
+    }
+
+    &--slot-1 {
+      background-color: #3E81CE;
+    }
+
+    &--slot-2 {
+      background-color: #BF052A;
+    }
+
+    &--slot-3 {
+      background-color: #841d9b;
+    }
+  }
+
+  &__bottom-row {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     font-size: 2.5rem;
     flex-grow: 1;
+    padding: 0 0.5rem 0 1rem;
     min-width: 0;
     align-self: stretch;
-
-    & > div {
-      text-align: right;
-    }
   }
 
   &__estimate {
     margin-top: 0.5rem;
+  }
+
+  &__timer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #000;
+    color: #fff;
+    padding: 1rem;
+    padding-top: 1.4rem;
+    height: calc(100% - 1rem);
+  }
+
+  &__category {
+    font-size: 3rem;
+  }
+
+  &__estimate {
+    font-size: 1.5rem;
+    margin-top: 0rem;
   }
 }
 

@@ -1,4 +1,12 @@
 @import "components/gameplate";
 @import "components/incentive-view";
-@import "components/timer-bar";
-@import "components/nameplate";
+@import "components/camera-overlay";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica';
+  font-size: 16px;
+}

@@ -45,13 +45,12 @@ export const Nameplate: React.FC<NameplateProps> = ({
       </div>
       <div className="nameplate__name">
         {player.name}
-
-        {player.pronouns && (
-          <div className="nameplate__pronouns">
-            {player.pronouns}
-          </div>
-        )}
       </div>
+      {player.pronouns && (
+        <div className="nameplate__pronouns">
+          {player.pronouns}
+        </div>
+      )}
     </div>
   )
 }

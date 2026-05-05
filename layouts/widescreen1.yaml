@@ -7,7 +7,7 @@ root:
   - type: column
     width: 608px
     children:
-    - type: timer-bar
+    - type: camera-overlay
   - type: column
     width: 1312px
     children:

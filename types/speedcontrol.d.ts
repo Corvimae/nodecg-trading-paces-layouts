@@ -14,6 +14,7 @@ namespace Speedcontrol {
     setupTime: string;
     setupTimeS: number;
     teams: Team[];
+    system: string;
   } 
 
   export interface Team {
