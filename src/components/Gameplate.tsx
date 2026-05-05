@@ -17,7 +17,7 @@ function normalizeConsoleAbbreviation(name: string) {
   return name.substring(0, 4).trim().toUpperCase();
 }
 export const Gameplate = ({}) => {
- const [runDataActiveRun] = cartographer.useReplicant<Speedcontrol.ActiveRun | null>('runDataActiveRun', null, {
+ const [runDataActiveRun] = cartographer.useReplicant<Speedcontrol.Run | null>('runDataActiveRun', null, {
     namespace: 'nodecg-speedcontrol',
   });
 

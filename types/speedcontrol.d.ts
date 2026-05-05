@@ -1,6 +1,5 @@
 namespace Speedcontrol {
-
-  export interface ActiveRun {
+  export interface Run {
     id: string;
     category: string;
     estimate: string;

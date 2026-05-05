@@ -90,9 +90,9 @@ export = (nodecg: NodeCG.ServerAPI) => {
   requestIncentivePlan();
 
   async function updateDonationTotal() {
-    const request = await fetch(`${nodecg.bundleConfig.trackerUrl}/events/${nodecg.bundleConfig.trackerEvent}?totals`);
-    
     try {
+      const request = await fetch(`${nodecg.bundleConfig.trackerUrl}/events/${nodecg.bundleConfig.trackerEvent}?totals`);
+    
       const response = await request.json();
 
       if (request.status !== 200) throw new Error(`Error response from tracker: ${request.status} (${request.statusText}).`);

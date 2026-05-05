@@ -4,7 +4,7 @@ import { BUNDLE_NAME } from "./utils";
 
 const BID_DISPLAY_DURATION_MS = 10000;
 const BLANKING_DURATION_MS = 1000;
-const ANIMATION_DELAY_MS = 50;
+export const ANIMATION_DELAY_MS = 50;
 
 interface IncentiveRotationState {
   index: number;

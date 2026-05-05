@@ -1,8 +1,8 @@
 import { BitmapCanvas } from "./bitmapCanvas";
 import { formatCurrency } from "./utils";
 
-const GRID_WIDTH = 316;
-const GRID_HEIGHT = 27;
+export const INCENTIVE_GRID_WIDTH = 316;
+export const INCENTIVE_GRID_HEIGHT = 27;
 
 export type BidwarOption = { name: string; total: number; };
 
@@ -21,8 +21,7 @@ function bindAnimationUtils(canvas: BitmapCanvas, frame: number) {
 }
 
 export function useIncentiveCanvas() {
-  const [grid, setGrid] = cartographer.useState<boolean[]>([]);
-  const canvasRef = cartographer.useRef(new BitmapCanvas(GRID_WIDTH, GRID_HEIGHT));
+  const canvasRef = cartographer.useRef(new BitmapCanvas(INCENTIVE_GRID_WIDTH, INCENTIVE_GRID_HEIGHT));
 
   return cartographer.useMemo(() => {
     function drawBidwarOption(name: string, value: number, startX: number, frame: number) {
@@ -91,8 +90,6 @@ export function useIncentiveCanvas() {
       for (let option of options) {
         dx = drawBidwarOption(option.name, option.total, dx + 4, frame);
       }
-
-      setGrid(canvas.points);
     }
 
     function drawTarget(name: string, current: number, goal: number, frame: number) {
@@ -139,8 +136,6 @@ export function useIncentiveCanvas() {
         15,
         { inverse: true }
       );
-   
-      setGrid(canvas.points);
     }
 
     function drawBinaryBidwar(name: string, options: BidwarOption[], frame: number) {
@@ -203,8 +198,6 @@ export function useIncentiveCanvas() {
         animationUtils.animateUpwards(15, 3),
         { inverse: isSecondOptionWinning },
       );
-
-      setGrid(canvas.points);
     }
 
     function drawDonationCTA(frame = 0) {
@@ -216,20 +209,15 @@ export function useIncentiveCanvas() {
       const normalizedOffset = frame % (canvas.width + canvas.getStringWidth(ctaMessage));
 
       canvas.drawString(ctaMessage, canvas.width - normalizedOffset, 10);
-      
-      setGrid(canvas.points);
     }
 
     function blank() {
       const canvas = canvasRef.current;
 
       canvas.blank();
-
-      setGrid(canvas.points);
     }
 
     return {
-      grid,
       internal: canvasRef.current,
       drawBidwar,
       drawTarget,
@@ -237,5 +225,5 @@ export function useIncentiveCanvas() {
       drawDonationCTA,
       blank,
     }
-  }, [grid])
+  }, [])
 }

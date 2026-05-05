@@ -2,7 +2,7 @@ import React from 'react';
 import { Nameplate, NameplateProps } from './Nameplate';
 
 export const CameraOverlay = () => {
-  const [runDataActiveRun] = cartographer.useReplicant<Speedcontrol.ActiveRun | null>('runDataActiveRun', null, {
+  const [runDataActiveRun] = cartographer.useReplicant<Speedcontrol.Run | null>('runDataActiveRun', null, {
     namespace: 'nodecg-speedcontrol',
   });
   

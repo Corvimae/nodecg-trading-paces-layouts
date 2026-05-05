@@ -1,0 +1,116 @@
+.break,
+.break-countdown,
+.break-sleep,
+.break-finale {
+  background-color: #000;
+}
+
+.break-screen {
+  &__title {
+    font-size: 4rem;
+    color: #000;
+    background-color: #E99C00;
+    padding: 1.5rem 1rem 1.2rem;
+    width: 100%;
+  }
+
+  &__schedule {
+    display: flex;
+    height: 550px;
+    max-height: 550px;
+    flex-direction: column;
+    margin-top: 0.5rem;
+    overflow-y: hidden;
+
+    &-item {
+      display: flex;
+      flex-direction: row;
+      color: #fff;
+      padding: 2rem 1rem;
+
+      & + & {
+        margin-top: 0.5rem;
+      }
+
+      &:nth-of-type(1) {
+        background-color: #63269B;
+      }
+
+      &:nth-of-type(2) {
+        background-color: #0E6930;
+      }
+
+      &:nth-of-type(3) {
+        background-color: #3E81CE;
+      }
+
+      &-left-column {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 750px;
+      }
+
+      &-title {
+        font-size: 3rem;
+      }
+
+      &-subtitle {
+        font-size: 2rem;
+      }
+
+      &-right-column {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        flex-grow: 1;
+        min-width: 0;
+        align-self: stretch;
+        text-align: right;
+      }
+
+      &-departing {
+        font-size: 2rem;
+      }
+
+      &-estimated-start{
+        font-size: 3rem;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+
+  &__grid-container {
+    margin-top: 0.5rem;
+  }
+
+  &__song-grid {
+    margin-top: -2px;
+    margin-left: -2px;
+  }
+
+  &__text {
+    font-size: 2rem;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  &__alert {
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+    max-height: 550px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 3.5rem;
+    line-height: 1.2;
+    padding: 0 10rem;
+    color: #fff;
+
+    & p {
+      margin: 0.5rem;
+    }
+  }
+}

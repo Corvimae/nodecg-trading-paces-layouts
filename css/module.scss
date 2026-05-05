@@ -1,6 +1,7 @@
-@import "components/gameplate";
-@import "components/incentive-view";
-@import "components/camera-overlay";
+@use "components/gameplate";
+@use "components/incentive-view";
+@use "components/camera-overlay";
+@use "components/break-screen";
 
 * {
   box-sizing: border-box;
@@ -9,4 +10,5 @@
 body {
   font-family: 'Helvetica';
   font-size: 16px;
+  font-weight: 700;
 }

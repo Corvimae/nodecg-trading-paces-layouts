@@ -11,3 +11,10 @@ export const BUNDLE_NAME = 'nodecg-trading-paces-layouts';
 export function formatCurrency(value: number) {
   return CURRENCY_FORMATTER.format(value);
 }
+
+
+export function pluralizeWithValue(value: number, phrase: string, plural = null) {
+  if (value === 1) return `${value} ${phrase}`;
+
+  return `${value} ${plural ?? `${phrase}s`}`;
+}

@@ -1,0 +1,38 @@
+name: break-countdown
+root:
+- type: row
+  width: 100%
+  height: 100%
+  gap: 32px
+  padding: 32px
+  children:
+  - type: column
+    width: 1270
+    height: 100%
+    children: 
+    - type: break-screen-title
+      text: Departures from Trading Paces 2026
+    - type: break-screen-countdown
+    - type: break-screen-title
+      text: Special Notices
+      margin:
+        top: auto
+    - type: break-screen-grid
+  - type: column
+    width: stretch
+    height: 100%
+    children:
+    - type: column
+      height: 50%;
+      children: 
+      - type: break-screen-title
+        text: Information
+      - type: break-screen-text
+        text: "Trading Paces 2026 benefits the Women's Foundation of Minnesota Immigrant Rapid Response Fund.\n\nTo learn more, visit wffm.org."
+    - type: column
+      height: 50%;
+      children: 
+      - type: break-screen-title
+        text: Attention
+      - type: break-screen-text
+        text: "Welcome to Trading Paces station.\n\nPlease report any unattended donations to hanginout.live/donate."
