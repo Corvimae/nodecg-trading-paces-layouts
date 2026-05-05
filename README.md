@@ -3,10 +3,11 @@
 NodeCG layouts for Trading Paces 2026.
 
 ## Required bundles
-- `nodecg-cartographer`
-- `nodecg-omnibar`
-- `nodecg-speedcontrol`
-- `speedcontrol-omnibar-schedule` (branch: `trading-paces`)
+- `corvimae/nodecg-cartographer`
+- `corvimae/nodecg-omnibar`
+- `speedcontrol/nodecg-speedcontrol`
+- `corvimae/speedcontrol-omnibar-schedule` (branch: `trading-paces`)
+- `corvimae/nodecg-event-supplimentaries`
 
 ## Recommended bundles
-- `nodecg-gdq-tracker-import`
+- `corvimae/nodecg-gdq-tracker-import`

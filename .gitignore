@@ -1,8 +1,8 @@
 node_modules/
-dashboard/
-graphics/
+/dashboard
+/graphics
 .cache/
 .parcel-cache/
 .DS_Store
-dist/
-extension/
+/dist
+/extension
