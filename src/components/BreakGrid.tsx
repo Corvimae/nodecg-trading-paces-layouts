@@ -50,7 +50,7 @@ export const BreakGrid: React.FC = () => {
   const [hostName] = cartographer.useReplicant<string>('host:name', '', {
     namespace: SUPPLIMENTARIES_MODULE_NAME,
   });
-  
+
   const [hostPronouns] = cartographer.useReplicant<string>('host:pronouns', '', {
     namespace: SUPPLIMENTARIES_MODULE_NAME,
   });
@@ -64,7 +64,9 @@ export const BreakGrid: React.FC = () => {
   const drawHostMarquee = useBoundedMarquee(hostName, 17, {
     bounds: {
       from: { x: 2, y: 5 },
-      to: { x: 123 - songCanvas.current.getStringWidth(hostPronouns) - 6, y: songCanvas.current.height },
+      to: { 
+        x: 123 - (hostPronouns ? songCanvas.current.getStringWidth(hostPronouns) + 6 : 1),
+        y: songCanvas.current.height },
     }
   });
 
@@ -95,10 +97,11 @@ export const BreakGrid: React.FC = () => {
       canvas.drawString(hostLabel, 4, 3, { inverse: true });
 
       // Host pronouns
-      const pronounsWidth = canvas.getStringWidth(hostPronounsRef.current);
-      canvas.drawFilledRect(125 - pronounsWidth - 5, 16, 123, 24);
-      canvas.drawString(hostPronounsRef.current, 122 - pronounsWidth, 17, { inverse: true });
-
+      if (hostPronounsRef.current) {
+        const pronounsWidth = canvas.getStringWidth(hostPronounsRef.current);
+        canvas.drawFilledRect(125 - pronounsWidth - 5, 16, 123, 24);
+        canvas.drawString(hostPronounsRef.current, 122 - pronounsWidth, 17, { inverse: true });
+      }
       // Now playing label
       const nowPlayingLabel = 'Now playing:';
       canvas.drawFilledRect(127, 2, canvas.width - 2, 10);
