@@ -29,14 +29,14 @@ export const Gameplate = ({}) => {
     namespace: 'nodecg-speedcontrol',
   });
 
-  const topRowClasses = classnames('gameplate__top-row', {
-    'gameplate__top-row--long-title': (runDataActiveRun?.game ?? '').length > 20,
+  const gameplateClasses = classnames('gameplate', {
+    'gameplate--long-title': (runDataActiveRun?.game ?? '').length > 25,
   })
 
   return (
-    <div className="gameplate">
+    <div className={gameplateClasses}>
       <div className="gameplate__texture" />
-      <div className={topRowClasses}>
+      <div className="gameplate__top-row">
         <div className="gameplate__title">{runDataActiveRun?.game}</div>
         {consoleLetters.map((letter, index) => (
           <div key={index} className={`gameplate__console-letter gameplate__console-letter--slot-${index}`}>
