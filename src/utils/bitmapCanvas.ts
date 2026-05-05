@@ -1,7 +1,16 @@
 import { BitmapLetters } from "./bitmapLetters";
 
-interface DrawOpts {
+export interface BitmapCoordinate {
+  x: number;
+  y: number;
+};
+
+export interface DrawOpts {
   inverse?: boolean;
+  bounds?: {
+    from: BitmapCoordinate;
+    to: BitmapCoordinate;
+  };
 }
 
 type DrawStringOpts = DrawOpts & {
@@ -34,8 +43,17 @@ export class BitmapCanvas {
     const offset = this.coordsToOffset(x, y);
 
     if (!offset) return;
+    
+    const isWithinBounds = !opts.bounds || (
+      x >= opts.bounds.from.x && 
+      x <= opts.bounds.to.x && 
+      y >= opts.bounds.from.y && 
+      y <= opts.bounds.to.y
+    );
 
-    this.points[offset] = !drawInverse;
+    if (isWithinBounds) {
+      this.points[offset] = !drawInverse;
+    }
   }
 
   getPoint(x: number, y: number) {
@@ -142,7 +160,7 @@ export class BitmapCanvas {
     this.drawLine(x1, y2, x1, y1);
   }
 
-  drawFilledRect(x1: number, y1: number, x2: number, y2: number) {
+  drawFilledRect(x1: number, y1: number, x2: number, y2: number, opts: DrawOpts = {}) {
     const startX = Math.min(x1, x2);
     const endX = Math.max(x1, x2);
     const startY = Math.min(y1, y2);
@@ -150,7 +168,7 @@ export class BitmapCanvas {
     
     for (let x = startX; x <= endX; x += 1) {
       for (let y = startY; y <= endY; y += 1) {
-        this.drawPoint(x, y);
+        this.drawPoint(x, y, opts);
       }
     }
   }

@@ -1,13 +1,21 @@
 import React from 'react';
 import { Nameplate, NameplateProps } from './Nameplate';
+import { SUPPLIMENTARIES_MODULE_NAME } from '../utils/utils';
 
 export const CameraOverlay = () => {
   const [runDataActiveRun] = cartographer.useReplicant<Speedcontrol.Run | null>('runDataActiveRun', null, {
     namespace: 'nodecg-speedcontrol',
   });
   
+  const [hostName] = cartographer.useReplicant<string>('host:name', '', {
+    namespace: SUPPLIMENTARIES_MODULE_NAME,
+  });
+  
+  const [hostPronouns] = cartographer.useReplicant<string>('host:pronouns', '', {
+    namespace: SUPPLIMENTARIES_MODULE_NAME,
+  });
+
   const headsets = cartographer.useMemo(() => {
-    const hostTeam = runDataActiveRun?.teams.find((team) => team.name.toLocaleLowerCase().includes('host'))?.players ?? [];
     const commentaryTeam = runDataActiveRun?.teams.find((team) => team.name.toLocaleLowerCase().includes('commenta'))?.players ?? [];
     const runnerTeams = runDataActiveRun?.teams.filter((team) => {
       const lowerTeamName = team.name.toLocaleLowerCase();
@@ -25,12 +33,18 @@ export const CameraOverlay = () => {
         player,
         type: 'commentator',
       } as NameplateProps)),
-      ...hostTeam.map((player) => ({
-        player,
+      ...(hostName ? [{
+        player: {
+          id: 'host-1',
+          name: hostName,
+          pronouns: hostPronouns,
+          teamID: 'host-team',
+          social: {},
+        },
         type: 'host',
-      } as NameplateProps)),
+      } as NameplateProps] : []),
     ];
-  }, [runDataActiveRun]);
+  }, [runDataActiveRun, hostName, hostPronouns]);
 
   return (
     <div className="camera-overlay">
