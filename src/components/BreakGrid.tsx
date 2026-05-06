@@ -5,7 +5,7 @@ import { BitmapCanvas, BitmapCoordinate, DrawOpts } from '../utils/bitmapCanvas'
 import { INCENTIVE_GRID_WIDTH } from '../utils/incentiveCanvas';
 import { useOnMount } from '../utils/hooks';
 import { ANIMATION_DELAY_MS } from '../utils/incentiveRotation';
-import { SUPPLIMENTARIES_MODULE_NAME } from '../utils/utils';
+import { SUPPLEMENTARIES_MODULE_NAME } from '../utils/utils';
 
 const MARQUEE_WAIT_FRAMES = 20 * 5; // 5 seconds per side
 
@@ -63,15 +63,15 @@ function useBoundedMarquee(value: string, y: number, opts: MarqueeOpts) {
 
 export const BreakGrid: React.FC = () => {
   const [nowPlaying] = cartographer.useReplicant<string>('foobar:nowPlaying', '', {
-    namespace: SUPPLIMENTARIES_MODULE_NAME,
+    namespace: SUPPLEMENTARIES_MODULE_NAME,
   });
 
   const [hostName] = cartographer.useReplicant<string>('host:name', '', {
-    namespace: SUPPLIMENTARIES_MODULE_NAME,
+    namespace: SUPPLEMENTARIES_MODULE_NAME,
   });
 
   const [hostPronouns] = cartographer.useReplicant<string>('host:pronouns', '', {
-    namespace: SUPPLIMENTARIES_MODULE_NAME,
+    namespace: SUPPLEMENTARIES_MODULE_NAME,
   });
 
   const songCanvas = cartographer.useRef(new BitmapCanvas(INCENTIVE_GRID_WIDTH, INCENTIVE_GRID_WIDTH));

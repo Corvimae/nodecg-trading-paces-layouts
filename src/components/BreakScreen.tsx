@@ -1,6 +1,5 @@
 import React from 'react';
-import { BreakSchedule } from './BreakSchedule';
-import { SUPPLIMENTARIES_MODULE_NAME } from '../utils/utils';
+import { SUPPLEMENTARIES_MODULE_NAME } from '../utils/utils';
 
 interface BreakTitleProps {
   text?: string;
@@ -39,7 +38,7 @@ export const BreakAlert: React.FC<BreakAlertProps> = ({ text }) => (
 
 export const BreakCountdown: React.FC = () => {
   const [countdownSecondsRemaining] = cartographer.useReplicant<number>('countdownSecondsRemaining', 0, {
-    namespace: SUPPLIMENTARIES_MODULE_NAME,
+    namespace: SUPPLEMENTARIES_MODULE_NAME,
   });
   
   const minutesRemaining = Math.floor(countdownSecondsRemaining / 60);

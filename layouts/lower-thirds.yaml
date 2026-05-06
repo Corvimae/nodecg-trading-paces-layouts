@@ -1,0 +1,9 @@
+name: lower-thirds
+root:
+- type: column
+  width: stretch
+  height: stretch
+  justify: flex-end
+  children:
+  - type: lower-thirds
+ 

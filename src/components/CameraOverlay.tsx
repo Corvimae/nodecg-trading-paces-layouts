@@ -1,6 +1,6 @@
 import React from 'react';
 import { Nameplate, NameplateProps } from './Nameplate';
-import { SUPPLIMENTARIES_MODULE_NAME } from '../utils/utils';
+import { SUPPLEMENTARIES_MODULE_NAME } from '../utils/utils';
 
 export const CameraOverlay = () => {
   const [runDataActiveRun] = cartographer.useReplicant<Speedcontrol.Run | null>('runDataActiveRun', null, {
@@ -8,11 +8,11 @@ export const CameraOverlay = () => {
   });
   
   const [hostName] = cartographer.useReplicant<string>('host:name', '', {
-    namespace: SUPPLIMENTARIES_MODULE_NAME,
+    namespace: SUPPLEMENTARIES_MODULE_NAME,
   });
   
   const [hostPronouns] = cartographer.useReplicant<string>('host:pronouns', '', {
-    namespace: SUPPLIMENTARIES_MODULE_NAME,
+    namespace: SUPPLEMENTARIES_MODULE_NAME,
   });
 
   const headsets = cartographer.useMemo(() => {

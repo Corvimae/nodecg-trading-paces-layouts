@@ -7,7 +7,7 @@ const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
 });
 
 export const BUNDLE_NAME = 'nodecg-trading-paces-layouts';
-export const SUPPLIMENTARIES_MODULE_NAME = 'nodecg-event-supplimentaries';
+export const SUPPLEMENTARIES_MODULE_NAME = 'nodecg-event-supplementaries';
 
 export function formatCurrency(value: number) {
   return CURRENCY_FORMATTER.format(value);
