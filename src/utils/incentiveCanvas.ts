@@ -208,7 +208,11 @@ export function useIncentiveCanvas() {
       const ctaMessage = 'Donate now at hanginout.live/donate!';
       const normalizedOffset = frame % (canvas.width + canvas.getStringWidth(ctaMessage));
 
-      canvas.drawString(ctaMessage, canvas.width - normalizedOffset, 10);
+      canvas.drawString(
+        ctaMessage,
+        Math.floor((canvas.width - canvas.getStringWidth(ctaMessage)) / 2),
+        Math.min(frame - 5, 10),
+      );
     }
 
     function blank() {

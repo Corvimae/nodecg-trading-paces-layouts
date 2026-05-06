@@ -25,7 +25,6 @@ export const CanvasRenderer: React.FC<CanvasRendererProps> = ({
     if (!canvas || !ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     for (let x = 0; x < bitmapCanvas.width; x += 1) {
       for (let y = 0; y < bitmapCanvas.height; y += 1) {
         if (bitmapCanvas.getPoint(x, y)) {

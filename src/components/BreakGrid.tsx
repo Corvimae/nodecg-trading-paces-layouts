@@ -7,7 +7,13 @@ import { useOnMount } from '../utils/hooks';
 import { ANIMATION_DELAY_MS } from '../utils/incentiveRotation';
 import { SUPPLIMENTARIES_MODULE_NAME } from '../utils/utils';
 
-function useBoundedMarquee(value: string, y: number, opts: DrawOpts) {
+const MARQUEE_WAIT_FRAMES = 20 * 5; // 5 seconds per side
+
+type MarqueeOpts = DrawOpts & {
+  padding?: number;
+};
+
+function useBoundedMarquee(value: string, y: number, opts: MarqueeOpts) {
   const frame = cartographer.useRef(0);
   const currentValue = cartographer.useRef(value);
   const currentOpts = cartographer.useRef(opts);
@@ -26,20 +32,33 @@ function useBoundedMarquee(value: string, y: number, opts: DrawOpts) {
   }, [opts]);
 
   return cartographer.useCallback((canvas: BitmapCanvas) => {
+    const padding = opts.padding ?? 0;
     const rightBound = currentOpts.current.bounds?.to.x ?? canvas.width;
     const leftBound = (currentOpts.current.bounds?.from.x ?? 0);
     const effectiveWidth = rightBound - leftBound;
-    const stringWidth = canvas.getStringWidth(currentValue.current);
-    const normalizedOffset = frame.current % (effectiveWidth + stringWidth);
+    const stringWidth = canvas.getStringWidth(currentValue.current) + (padding * 2);
+    const diff = stringWidth - effectiveWidth;
+    let offset = 0;
     
-    if (stringWidth < effectiveWidth) {
-      canvas.drawString(currentValue.current, leftBound, y, currentOpts.current);
+    if (frame.current >= MARQUEE_WAIT_FRAMES + diff) {
+      offset = diff;
+    } else if (frame.current >= MARQUEE_WAIT_FRAMES) {
+      offset = frame.current - MARQUEE_WAIT_FRAMES;
+      // frame.current % (effectiveWidth + stringWidth);
+    }
+    
+    if (diff < 0) {
+      canvas.drawString(currentValue.current, leftBound + padding, y, currentOpts.current);
     } else {
-      canvas.drawString(currentValue.current, rightBound - normalizedOffset, y, currentOpts.current);
+      canvas.drawString(currentValue.current, leftBound + padding - offset, y, currentOpts.current);
     }
 
-    frame.current += 1;
-  }, [])
+    if (frame.current >= MARQUEE_WAIT_FRAMES * 2 + diff) {
+      frame.current = 0;
+    } else {
+      frame.current += 1;
+    }
+  }, []);
 }
 
 export const BreakGrid: React.FC = () => {
@@ -55,8 +74,8 @@ export const BreakGrid: React.FC = () => {
     namespace: SUPPLIMENTARIES_MODULE_NAME,
   });
 
-  console.log(hostName, hostPronouns);
   const songCanvas = cartographer.useRef(new BitmapCanvas(INCENTIVE_GRID_WIDTH, INCENTIVE_GRID_WIDTH));
+  const incentiveLabelCanvas = cartographer.useRef(new BitmapCanvas(INCENTIVE_GRID_WIDTH, 10));
   const updateIntervalId = cartographer.useRef<number | null>(null);
   const frame = cartographer.useRef(0);
   const hostPronounsRef = cartographer.useRef('');
@@ -71,6 +90,7 @@ export const BreakGrid: React.FC = () => {
   });
 
   const drawNowPlayingMarquee = useBoundedMarquee(nowPlaying.trim(), 17,  {
+    padding: 2,
     bounds: {
       from: { x: 127, y: 0 },
       to: { x: songCanvas.current.width - 2, y: songCanvas.current.height },
@@ -92,7 +112,7 @@ export const BreakGrid: React.FC = () => {
       canvas.drawLine(125, 0, 125, canvas.height);
       
       // Host label
-      const hostLabel = 'Your host is:';
+      const hostLabel = 'Station Supervisor';
       canvas.drawFilledRect(2, 2, 123, 10);
       canvas.drawString(hostLabel, 4, 3, { inverse: true });
 
@@ -103,7 +123,7 @@ export const BreakGrid: React.FC = () => {
         canvas.drawString(hostPronounsRef.current, 122 - pronounsWidth, 17, { inverse: true });
       }
       // Now playing label
-      const nowPlayingLabel = 'Now playing:';
+      const nowPlayingLabel = 'Now Playing';
       canvas.drawFilledRect(127, 2, canvas.width - 2, 10);
       canvas.drawString(nowPlayingLabel, 129, 3, { inverse: true });
 
@@ -117,12 +137,24 @@ export const BreakGrid: React.FC = () => {
     updateIntervalId.current = window.setInterval(executeUpdate,ANIMATION_DELAY_MS);
     executeUpdate();
 
+    const labelCanvas = incentiveLabelCanvas.current;
+    labelCanvas.blank();
+    labelCanvas.drawFilledRect(2, 1, labelCanvas.width - 2, labelCanvas.height);
+    labelCanvas.drawString('Incentives Arriving Soon', 4, 2, { inverse: true });
+
     return () => {
       if (updateIntervalId.current) window.clearInterval(updateIntervalId.current);
     }
   });
+
   return (
     <div className="break-screen__grid-container">
+      <CanvasRenderer
+        canvas={incentiveLabelCanvas.current}
+        className="break-screen__incentives-label-grid"
+        width={1270}
+        height={40}
+      />
       <IncentiveGrid />
       <CanvasRenderer
         canvas={songCanvas.current}

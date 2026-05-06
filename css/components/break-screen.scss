@@ -6,6 +6,7 @@
 }
 
 .break-screen {
+  --content-max-size: 530px;
   &__title {
     font-size: 4rem;
     color: #000;
@@ -16,8 +17,8 @@
 
   &__schedule {
     display: flex;
-    height: 550px;
-    max-height: 550px;
+    height: var(--content-max-size);
+    max-height: var(--content-max-size);
     flex-direction: column;
     margin-top: 0.5rem;
     overflow-y: hidden;
@@ -83,10 +84,18 @@
 
   &__grid-container {
     margin-top: 0.5rem;
+
+    & .incentive-grid {
+      margin-top: -4px;
+    }
   }
 
   &__song-grid {
     margin-top: -2px;
+    margin-left: -2px;
+  }
+
+  &__incentives-label-grid {
     margin-left: -2px;
   }
 
@@ -99,8 +108,8 @@
   &__alert {
     display: flex;
     flex-direction: column;
-    height: 550px;
-    max-height: 550px;
+    height: var(--content-max-size);
+    max-height: var(--content-max-size);
     justify-content: center;
     align-items: center;
     text-align: center;
