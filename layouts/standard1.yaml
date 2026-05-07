@@ -1,18 +1,18 @@
-name: widescreen1
+name: standard1
 root:
 - type: row
   width: 100%
   height: calc(100% - 110px)
   children:
   - type: column
-    width: 608px
+    width: 936px
     children:
     - type: camera-overlay
   - type: column
-    width: 1312px
+    width: 984px
     className: tp-left-column
     children:
     - type: source
-      resolution: 16x9
+      resolution: 4x3
     - type: gameplate
       height: stretch

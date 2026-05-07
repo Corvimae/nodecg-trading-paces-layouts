@@ -1,7 +1,7 @@
 import React from 'react';
 import { IncentiveGrid } from './IncentiveGrid';
 import { CanvasRenderer } from './CanvasRenderer';
-import { BitmapCanvas, BitmapCoordinate, DrawOpts } from '../utils/bitmapCanvas';
+import { BitmapCanvas, DrawOpts } from '../utils/bitmapCanvas';
 import { INCENTIVE_GRID_WIDTH } from '../utils/incentiveCanvas';
 import { useOnMount } from '../utils/hooks';
 import { ANIMATION_DELAY_MS } from '../utils/incentiveRotation';
@@ -44,9 +44,8 @@ function useBoundedMarquee(value: string, y: number, opts: MarqueeOpts) {
       offset = diff;
     } else if (frame.current >= MARQUEE_WAIT_FRAMES) {
       offset = frame.current - MARQUEE_WAIT_FRAMES;
-      // frame.current % (effectiveWidth + stringWidth);
     }
-    
+        
     if (diff < 0) {
       canvas.drawString(currentValue.current, leftBound + padding, y, currentOpts.current);
     } else {
