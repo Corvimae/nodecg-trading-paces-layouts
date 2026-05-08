@@ -106,6 +106,8 @@
   }
 
   &__alert {
+    --content-max-size: 530px;
+
     display: flex;
     flex-direction: column;
     height: var(--content-max-size);
