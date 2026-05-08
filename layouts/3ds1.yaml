@@ -17,4 +17,5 @@ root:
     - type: source
       resolution: 5x3
     - type: gameplate
+      variant: smaller
       height: stretch

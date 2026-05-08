@@ -16,7 +16,12 @@ function normalizeConsoleAbbreviation(name: string) {
 
   return name.substring(0, 4).trim().toUpperCase();
 }
-export const Gameplate = ({}) => {
+
+interface GameplateProps {
+  variant?: string;
+}
+
+export const Gameplate: React.FC<GameplateProps> = ({ variant }) => {
  const [runDataActiveRun] = cartographer.useReplicant<Speedcontrol.Run | null>('runDataActiveRun', null, {
     namespace: 'nodecg-speedcontrol',
   });
@@ -29,9 +34,11 @@ export const Gameplate = ({}) => {
     namespace: 'nodecg-speedcontrol',
   });
 
-  const gameplateClasses = classnames('gameplate', {
+  const gameplateClasses = classnames('gameplate', variant, {
     'gameplate--long-title': (runDataActiveRun?.game ?? '').length > 25,
-  })
+  });
+
+  console.log('var', variant);
 
   return (
     <div className={gameplateClasses}>

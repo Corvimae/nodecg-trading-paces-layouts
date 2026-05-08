@@ -45,7 +45,7 @@ function useBoundedMarquee(value: string, y: number, opts: MarqueeOpts) {
     } else if (frame.current >= MARQUEE_WAIT_FRAMES) {
       offset = frame.current - MARQUEE_WAIT_FRAMES;
     }
-        
+
     if (diff < 0) {
       canvas.drawString(currentValue.current, leftBound + padding, y, currentOpts.current);
     } else {
@@ -81,9 +81,9 @@ export const BreakGrid: React.FC = () => {
 
   const drawHostMarquee = useBoundedMarquee(hostName, 17, {
     bounds: {
-      from: { x: 2, y: 5 },
+      from: { x: 4, y: 5 },
       to: { 
-        x: 123 - (hostPronouns ? songCanvas.current.getStringWidth(hostPronouns) + 6 : 1),
+        x: 124 - (hostPronouns ? songCanvas.current.getStringWidth(hostPronouns) + 6 : 1),
         y: songCanvas.current.height },
     }
   });
