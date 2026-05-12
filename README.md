@@ -11,3 +11,4 @@ NodeCG layouts for Trading Paces 2026.
 
 ## Recommended bundles
 - `corvimae/nodecg-gdq-tracker-import`
+- `corvimae/nodecg-gdq-tracker-rundown`
