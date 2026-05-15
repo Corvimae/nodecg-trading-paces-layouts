@@ -37,7 +37,7 @@ export const BreakAlert: React.FC<BreakAlertProps> = ({ text }) => (
 );
 
 export const BreakCountdown: React.FC = () => {
-  const [countdownSecondsRemaining] = cartographer.useReplicant<number>('countdownSecondsRemaining', 0, {
+  const [countdownSecondsRemaining] = cartographer.useReplicant<number>('countdown:secondsRemaining', 0, {
     namespace: SUPPLEMENTARIES_MODULE_NAME,
   });
   
